@@ -1,0 +1,12 @@
+.loader {
+  text-align: center;
+  padding: var(--base-gap) 0;
+}
+
+.post-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--base-gap) 0;
+  gap: var(--base-gap);
+}

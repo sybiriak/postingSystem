@@ -1,0 +1,14 @@
+.post-item {
+  padding: var(--base-gap);
+  border-radius: var(--base-radius);
+  border: 2px solid var(--color-lightblue);
+
+  .title {
+    margin-top: 0;
+  }
+}
+
+.tags {
+  display: flex;
+  gap: calc(#{var(--base-gap)} / 2);
+}

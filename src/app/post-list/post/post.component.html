@@ -1,0 +1,11 @@
+<div class="post-item" *ngIf="post">
+  <h4 class="title">{{post.title}}</h4>
+  <p>{{post.text}}</p>
+  <div class="tags">
+    <ng-container *ngFor="let tag of post.tags">
+      <app-tag 
+        [tag]="tag"
+      ></app-tag>
+    </ng-container>
+  </div>
+</div>

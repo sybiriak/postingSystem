@@ -1,0 +1,22 @@
+$tag-gap: calc(#{var(--base-gap)} / 2);
+
+.tag-item {
+  border-radius: var(--base-radius);
+  padding: $tag-gap;
+  background-color: var(--color-darkseagreen);
+  color: var(--color-darkgreen);
+  display: flex;
+  align-items: center;
+  flex: 1;
+  font-size: 14px;
+  gap: $tag-gap;
+}
+
+.remove-button {
+  padding: 0;
+  margin: 0;
+  background: none;
+  border: 0;
+  font-size: 1em;
+  cursor: pointer;
+}
