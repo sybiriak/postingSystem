@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { finalize, Subscription } from 'rxjs';
+import { catchError, finalize, of, Subscription } from 'rxjs';
 import { Post } from '../shared/models/post';
-import { PostListService } from './post-list.service';
+import { PostService } from './post.service';
 
 @Component({
   selector: 'app-post-list',
@@ -18,7 +18,7 @@ export class PostListComponent implements OnInit, OnDestroy {
   private subscribtion = new Subscription();
 
   constructor(
-    private postService: PostListService,
+    private postService: PostService,
     private cdr: ChangeDetectorRef
   ) { }
 
@@ -28,7 +28,8 @@ export class PostListComponent implements OnInit, OnDestroy {
         finalize(() => {
           this.isLoading = false;
           this.cdr.detectChanges();
-        })
+        }),
+        catchError((err) => (console.error(err), of([])))
       )
       .subscribe(postList => this.postList = postList));
   }

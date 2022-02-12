@@ -1,12 +1,12 @@
 $tag-gap: calc(#{var(--base-gap)} / 2);
 
 .tag-item {
-  border-radius: var(--base-radius);
-  padding: $tag-gap;
-  background-color: var(--color-darkseagreen);
-  color: var(--color-darkgreen);
+  border-radius: calc(#{var(--base-radius)} * 4);
+  padding: $tag-gap var(--base-gap);
+  background-color: var(--color-light-grey);
   display: flex;
   align-items: center;
+  font-weight: 600;
   flex: 1;
   font-size: 14px;
   gap: $tag-gap;
@@ -14,9 +14,17 @@ $tag-gap: calc(#{var(--base-gap)} / 2);
 
 .remove-button {
   padding: 0;
-  margin: 0;
-  background: none;
+  margin: 0 -5px 0 0;
+  background: var(--color-grey);
   border: 0;
   font-size: 1em;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
+  border-radius: 50%;
+  color: var(--color-white);
+  line-height: 15px;
 }

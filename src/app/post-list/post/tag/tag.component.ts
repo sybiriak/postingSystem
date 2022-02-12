@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-tag',
@@ -10,9 +10,16 @@ export class TagComponent implements OnInit {
 
   @Input() tag: string | null = null;
 
+  @Input() isEditMode = false;
+
+  @Output() tagRemoved = new EventEmitter<string | null>();
+
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  removeTag(): void {
+    this.tagRemoved.emit(this.tag);
+  }
 }

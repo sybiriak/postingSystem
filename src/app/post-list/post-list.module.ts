@@ -1,24 +1,28 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PostListComponent } from './post-list.component';
-import { PostListService } from './post-list.service';
+import { PostService } from './post.service';
 import { HttpClientModule } from '@angular/common/http';
 import { PostComponent } from './post/post.component';
 import { TagComponent } from './post/tag/tag.component';
+import { SafeHTMLPipe } from '../shared/pipes/safe-html.pipe';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
   declarations: [
     PostListComponent,
     PostComponent,
-    TagComponent
+    TagComponent,
+    SafeHTMLPipe
   ],
   imports: [
     CommonModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule
   ],
   providers: [
-    PostListService
+    PostService
   ],
   exports: [
     PostListComponent

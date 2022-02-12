@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
+import { map, Observable, of } from 'rxjs';
 import { PostRaw } from '../shared/interfaces/post';
 import { Post } from '../shared/models/post';
 
 @Injectable()
-export class PostListService {
+export class PostService {
 
   constructor(
     private http: HttpClient
@@ -16,5 +16,9 @@ export class PostListService {
       .pipe(
         map((response) => response.map(d => new Post(d)))
       );
+  }
+
+  updatePost(post: Post): Observable<boolean> {
+    return of(true);
   }
 }

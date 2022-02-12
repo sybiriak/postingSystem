@@ -1,14 +1,48 @@
+$tag-gap: calc(#{var(--base-gap)} / 2);
+
 .post-item {
   padding: var(--base-gap);
+  background-color: var(--color-white);
   border-radius: var(--base-radius);
-  border: 2px solid var(--color-lightblue);
+  box-shadow: 0 2px 1px -1px #0003, 0 1px 1px #00000024, 0 1px 3px #0000001f;
+  display: flex;
+  flex-direction: column;
+  gap: var(--base-gap);
 
-  .title {
-    margin-top: 0;
+  .title,
+  .text {
+    margin: 0;
+    line-height: 21px;
+  }
+
+  .title-input,
+  .text-input {
+    font-family: Arial, Helvetica, sans-serif;
+
   }
 }
 
 .tags {
   display: flex;
-  gap: calc(#{var(--base-gap)} / 2);
+  gap: $tag-gap;
+}
+
+.add-button {
+  font-size: 23px;
+  padding: 0 $tag-gap;
+  border-radius: 50%;
+  width: 31px;
+  height: 31px;
+}
+
+.actions-container,
+.actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--base-gap);
+}
+
+.actions {
+  justify-content: flex-end;
 }

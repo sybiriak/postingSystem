@@ -1,4 +1,4 @@
 <span class="tag-item" *ngIf="tag">
   {{tag}}
-  <button class="remove-button">x</button>
+  <button *ngIf="isEditMode" class="remove-button" (click)="removeTag()">x</button>
 </span>

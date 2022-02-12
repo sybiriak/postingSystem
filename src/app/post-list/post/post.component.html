@@ -1,11 +1,34 @@
-<div class="post-item" *ngIf="post">
-  <h4 class="title">{{post.title}}</h4>
-  <p>{{post.text}}</p>
-  <div class="tags">
-    <ng-container *ngFor="let tag of post.tags">
-      <app-tag 
-        [tag]="tag"
-      ></app-tag>
+<div class="post-item" *ngIf="post && form">
+
+  <ng-container [ngSwitch]="isEditMode">
+    <ng-container *ngSwitchCase="false">
+      <h3 class="title">{{post.title}}</h3>
+      <p class="text" [innerHTML]="post.text | safeHTML"></p>
     </ng-container>
+    <ng-container *ngSwitchCase="true" [formGroup]="form">
+      <input class="title-input" type="text" name="title" formControlName="title">
+      <textarea class="text-input" name="text" rows="1" formControlName="text"></textarea>
+    </ng-container>
+  </ng-container>
+
+  <div class="actions-container">
+    <div class="tags">
+      <ng-container *ngFor="let tag of this.form.get('tags')?.value">
+        <app-tag 
+          [tag]="tag"
+          [isEditMode]="isEditMode"
+          (tagRemoved)="updateTags($event)"
+        ></app-tag>
+      </ng-container>
+      <button *ngIf="isEditMode" class="primary-button add-button">+</button>
+    </div>
+    
+    <div class="actions" [ngSwitch]="isEditMode">
+      <button *ngSwitchCase="false" class="primary-button" (click)="setToEditMode(true)">Edit</button>
+      <ng-container *ngSwitchCase="true">
+        <button class="secondary-button" (click)="clearChanges()">Cancel</button>
+        <button class="primary-button" (click)="saveComment()">Save</button>
+      </ng-container>
+    </div>
   </div>
 </div>
