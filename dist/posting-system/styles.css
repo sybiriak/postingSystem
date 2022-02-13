@@ -1,0 +1,53 @@
+/*!*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].rules[0].oneOf[0].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].rules[0].oneOf[0].use[2]!./node_modules/resolve-url-loader/index.js??ruleSet[1].rules[6].rules[1].use[0]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[6].rules[1].use[1]!./src/styles.scss ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/* You can add global styles to this file, and also import other style files */
+* {
+  box-sizing: border-box;
+}
+:root {
+  --base-gap: 15px;
+  --base-radius: 4px;
+  --color-white: white;
+  --color-light-grey: #e0e0e0;
+  --color-grey: #9A9A9A;
+  --color-lightblue: lightblue;
+  --color-blue: rgb(63,81,181);
+  --color-darkseagreen: darkseagreen;
+  --color-darkgreen: darkgreen;
+  --color-darkorange: darkorange;
+  --color-red: #F44336;
+}
+body {
+  padding: 0;
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  background-color: #fafafa;
+  min-height: 100vh;
+}
+.container {
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 var(--base-gap);
+  margin: 0 auto;
+}
+.primary-button {
+  border: 0;
+  border-radius: var(--base-radius);
+  padding: calc(var(--base-gap) / 2) var(--base-gap);
+  background-color: var(--color-blue);
+  color: var(--color-white);
+  font-size: 14px;
+  cursor: pointer;
+}
+.secondary-button {
+  border: 0;
+  border-radius: var(--base-radius);
+  padding: calc(var(--base-gap) / 2) var(--base-gap);
+  background-color: var(--color-white);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/*# sourceMappingURL=styles.css.map*/
