@@ -6,13 +6,13 @@
       <p class="text" [innerHTML]="post.text | safeHTML"></p>
     </ng-container>
     <ng-container *ngSwitchCase="true" [formGroup]="form">
-      <input class="title-input" type="text" name="title" formControlName="title">
-      <textarea class="text-input" name="text" rows="1" formControlName="text"></textarea>
+      <input class="title-input" type="text" name="title" formControlName="title" placeholder="Type Title">
+      <textarea class="text-input" name="text" rows="1" formControlName="text" placeholder="Type text"></textarea>
     </ng-container>
   </ng-container>
 
   <div class="actions-container">
-    <div class="tags">
+    <div class="tag-list">
       <ng-container *ngFor="let tag of this.form.get('tags')?.value">
         <app-tag 
           [tag]="tag"
@@ -20,14 +20,34 @@
           (tagRemoved)="updateTags($event)"
         ></app-tag>
       </ng-container>
-      <button *ngIf="isEditMode" class="primary-button add-button">+</button>
+      <ng-container *ngIf="isEditMode">
+        <button  class="primary-button add-button" (click)="showAddTagField()">
+          {{ isAddTagFieldShowed ? '-' : '+' }}
+        </button>
+        <ng-container *ngIf="isAddTagFieldShowed">
+          <input
+            [formControl]="addTagControl"
+            [ngClass]="{invalid: addTagControl.errors}"
+            type="text"
+            placeholder="add Tag"
+            list="tag-list"
+          >
+          <datalist id="tag-list">
+            <option *ngFor="let item of availableTags" [value]="item"></option>
+          </datalist>
+          <button class="primary-button add-tag-button" (click)="addTag()" [disabled]="addTagControl.errors">Add</button>
+        </ng-container>
+      </ng-container>
     </div>
     
     <div class="actions" [ngSwitch]="isEditMode">
-      <button *ngSwitchCase="false" class="primary-button" (click)="setToEditMode(true)">Edit</button>
+      <ng-container *ngSwitchCase="false">
+        <button class="primary-button delete-post-button" (click)="deletePost()">Delete</button>
+        <button class="primary-button" (click)="setToEditMode(true)">Edit</button>
+      </ng-container>
       <ng-container *ngSwitchCase="true">
         <button class="secondary-button" (click)="clearChanges()">Cancel</button>
-        <button class="primary-button" (click)="saveComment()">Save</button>
+        <button class="primary-button" (click)="savePost()">Save</button>
       </ng-container>
     </div>
   </div>

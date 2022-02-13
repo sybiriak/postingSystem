@@ -22,9 +22,21 @@ $tag-gap: calc(#{var(--base-gap)} / 2);
   }
 }
 
-.tags {
+.tag-list {
   display: flex;
   gap: $tag-gap;
+
+  input.invalid {
+    outline-color: var(--color-red);
+    border: 2px solid var(--color-red);
+    border-radius: var(--base-radius);
+  }
+}
+
+.add-tag-button:disabled {
+  background-color: var(--color-grey);
+  pointer-events: none;
+  cursor: default;
 }
 
 .add-button {
@@ -45,4 +57,8 @@ $tag-gap: calc(#{var(--base-gap)} / 2);
 
 .actions {
   justify-content: flex-end;
+}
+
+.delete-post-button {
+  background-color: var(--color-red);
 }

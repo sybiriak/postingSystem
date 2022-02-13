@@ -8,7 +8,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output
 })
 export class TagComponent implements OnInit {
 
-  @Input() tag: string | null = null;
+  @Input() tag: string = '';
 
   @Input() isEditMode = false;
 

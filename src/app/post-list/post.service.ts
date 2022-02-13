@@ -21,4 +21,13 @@ export class PostService {
   updatePost(post: Post): Observable<boolean> {
     return of(true);
   }
+
+  addPost(post: Post): Observable<Post> {
+    post.id = (Math.random() * Math.random() * Math.random()).toString(); // Server generate id simulation
+    return of(post);
+  }
+
+  deletePost(postId: string): Observable<boolean> {
+    return of(true);
+  }
 }

@@ -4,10 +4,31 @@
   </div>
   
   <div class="post-list" *ngIf="!isLoading">
+    <div class="tag-filter">
+      <label> Tag Filter
+        <select name="tag-filter" [formControl]="tagFilterControl">
+          <option value="" [defaultSelected]="">Not selected</option>
+          <option *ngFor="let item of tags" 
+            [value]="item" 
+            [selected]="tagFilterControl.value === item"
+          >{{item}}</option>
+        </select>
+      </label>
+    </div>
+
     <ng-container *ngFor="let post of postList; trackBy: trackById">
       <app-post
         [post]="post"
+        [tags]="tags"
+        (postUpdated)="updatePostList($event)"
       ></app-post>
     </ng-container>
+
+    <app-post
+      [post]="newPost"
+      [tags]="tags"
+      [isEditMode]="true"
+      (postUpdated)="updatePostList($event)"
+    ></app-post>
   </div>
 </div>
