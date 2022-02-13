@@ -1,4 +1,7 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { SafeHTMLPipe } from 'src/app/shared/pipes/safe-html.pipe';
+import { PostService } from '../post.service';
 
 import { PostComponent } from './post.component';
 
@@ -8,7 +11,9 @@ describe('PostComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PostComponent ]
+      declarations: [ PostComponent, SafeHTMLPipe ],
+      imports: [HttpClientTestingModule],
+      providers: [PostService]
     })
     .compileComponents();
   });
