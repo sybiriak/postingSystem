@@ -1,20 +1,11 @@
 <div class="container">
-  <div class="loader" *ngIf="isLoading">
-    Loading...
-  </div>
-  
+  <div class="loader" *ngIf="isLoading">Loading...</div>
+
   <div class="post-list" *ngIf="!isLoading">
-    <div class="tag-filter">
-      <label> Tag Filter
-        <select name="tag-filter" [formControl]="tagFilterControl">
-          <option value="" [defaultSelected]="">Not selected</option>
-          <option *ngFor="let item of tags" 
-            [value]="item" 
-            [selected]="tagFilterControl.value === item"
-          >{{item}}</option>
-        </select>
-      </label>
-    </div>
+    <app-select-filter
+      [options]="tags"
+      (filtered)="filterPostList($event)"
+    ></app-select-filter>
 
     <ng-container *ngFor="let post of postList; trackBy: trackById">
       <app-post
@@ -27,7 +18,7 @@
     <app-post
       [post]="newPost"
       [tags]="tags"
-      [isEditMode]="true"
+      [isEditMode]="!newPost.id"
       (postUpdated)="updatePostList($event)"
     ></app-post>
   </div>

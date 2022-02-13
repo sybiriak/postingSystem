@@ -6,16 +6,12 @@ import { Post } from '../shared/models/post';
 
 @Injectable()
 export class PostService {
-
-  constructor(
-    private http: HttpClient
-  ) { }
+  constructor(private http: HttpClient) {}
 
   getAll(): Observable<Post[]> {
-    return this.http.get<PostRaw[]>('/assets/mocks/post-list.json')
-      .pipe(
-        map((response) => response.map(d => new Post(d)))
-      );
+    return this.http
+      .get<PostRaw[]>('/assets/mocks/post-list.json')
+      .pipe(map((response) => response.map((d) => new Post(d))));
   }
 
   updatePost(post: Post): Observable<boolean> {
