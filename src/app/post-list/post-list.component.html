@@ -1,25 +1,24 @@
 <div class="container">
-  <div class="loader" *ngIf="isLoading">Loading...</div>
-
-  <div class="post-list" *ngIf="!isLoading">
-    <app-select-filter
-      [options]="tags"
-      (filtered)="filterPostList($event)"
-    ></app-select-filter>
-
-    <ng-container *ngFor="let post of postList; trackBy: trackById">
+  <ng-container *ngIf="(postList$ | async) as post; else loader">
+    <div class="post-list">
+      <app-select-filter
+        [options]="post.tags"
+        (filtered)="filterPostList($event)"
+      ></app-select-filter>
+  
+      <ng-container *ngFor="let item of post.list; trackBy: trackById">
+        <app-post
+          [post]="item"
+        ></app-post>
+      </ng-container>
+  
       <app-post
-        [post]="post"
-        [tags]="tags"
-        (postUpdated)="updatePostList($event)"
+        [isEditMode]="true"
       ></app-post>
-    </ng-container>
-
-    <app-post
-      [post]="newPost"
-      [tags]="tags"
-      [isEditMode]="!newPost.id"
-      (postUpdated)="updatePostList($event)"
-    ></app-post>
-  </div>
+    </div>
+  </ng-container>
 </div>
+
+<ng-template #loader>
+  <div class="loader">Loading...</div>
+</ng-template>

@@ -1,56 +1,29 @@
-import { catchError, of, Subscription } from 'rxjs';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  OnInit,
-  OnDestroy,
-  OnChanges,
-  SimpleChanges,
-  Output,
-  EventEmitter,
-  ChangeDetectorRef,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { Subscription } from 'rxjs';
+import { PostRaw } from 'src/app/shared/interfaces/post';
 import { Post } from 'src/app/shared/models/post';
-import { PostService } from '../post.service';
-import { uniqueValidator } from 'src/app/shared/validators/unique';
+import { PostListService } from '../post-list.service';
 
 @Component({
   selector: 'app-post',
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PostComponent implements OnChanges, OnInit, OnDestroy {
-  @Input() post: Post = {} as Post;
+export class PostComponent implements OnInit, OnDestroy {
 
-  @Input() tags: string[] = [];
+  @Input() post: Post = new Post({} as PostRaw);
 
   @Input() isEditMode = false;
-
-  @Output() postUpdated = new EventEmitter<Post | null>();
-
-  availableTags: string[] = [];
-
-  isAddTagFieldShowed = false;
-
+  
   form: FormGroup = new FormGroup({});
 
-  addTagControl: FormControl = new FormControl('');
+  tags: string[] = [];
 
-  subscription = new Subscription();
+  private subscription = new Subscription();
 
-  constructor(
-    private postService: PostService,
-    private cdr: ChangeDetectorRef
-  ) {}
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['tags'] && changes['tags'].currentValue) {
-      this.updateAvailableTags(changes);
-    }
-  }
+  constructor(private postListService: PostListService) {}
 
   ngOnInit(): void {
     this.form = new FormGroup({
@@ -58,21 +31,12 @@ export class PostComponent implements OnChanges, OnInit, OnDestroy {
       text: new FormControl(this.post.text),
       tags: new FormControl(this.post.tags || []),
     });
+
+    this.setTags();
   }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
-  }
-
-  setToEditMode(isEdit: boolean): void {
-    this.isEditMode = isEdit;
-  }
-
-  clearChanges(): void {
-    this.post.id ? this.form.patchValue(this.post) : this.form.reset();
-    this.showAddTagField(false);
-    this.setToEditMode(false);
-    this.updateAvailableTags();
   }
 
   savePost(): void {
@@ -86,88 +50,46 @@ export class PostComponent implements OnChanges, OnInit, OnDestroy {
 
   updatePost(post: Post): void {
     this.subscription.add(
-      this.postService
-        .updatePost(post)
-        .pipe(catchError((err) => (console.error(err), of(false))))
-        .subscribe((updated: boolean) => {
-          if (updated) {
-            this.setToEditMode(false);
-            this.postUpdated.emit(post);
-          }
-        })
+      this.postListService.updatePost(post).subscribe((updated: boolean) => {
+        if (updated) {
+          this.setToEditMode(false);
+        }
+      })
     );
   }
 
   addPost(post: Post): void {
     this.subscription.add(
-      this.postService
-        .addPost(post)
-        .pipe(catchError((err) => (console.error(err), of(null))))
-        .subscribe((newPost: Post | null) => {
-          if (newPost) {
-            this.postUpdated.emit(newPost);
-            this.clearChanges();
-            this.setToEditMode(true);
-          }
-        })
+      this.postListService.addPost(post).subscribe((added: boolean) => {
+        if (added) {
+          this.clearChanges();
+        }
+      })
     );
   }
 
   deletePost(): void {
     this.subscription.add(
-      this.postService
-        .deletePost(this.post.id)
-        .pipe(catchError((err) => (console.error(err), of(false))))
-        .subscribe((deleted: boolean) => {
-          if (deleted) {
-            this.post.deleted = true;
-            this.postUpdated.emit(this.post);
-          }
-        })
+      this.postListService.deletePost(this.post.id).subscribe()
     );
   }
 
-  showAddTagField(show?: boolean): void {
-    this.isAddTagFieldShowed = show ?? !this.isAddTagFieldShowed;
-    if (!this.isAddTagFieldShowed) {
-      this.addTagControl.reset();
-    }
+  setToEditMode(isEdit: boolean): void {
+    this.isEditMode = isEdit;
   }
 
-  updateTags(tag: string | null): void {
-    const tagsControl = this.form.get('tags');
-    if (tagsControl && tag) {
-      let tags: string[] = tagsControl.value || [];
-      if (tags.includes(tag)) {
-        tags = tags.filter((d) => d !== tag);
-      } else {
-        tags.push(tag);
-      }
-      tagsControl.patchValue(tags);
-    }
-    this.updateAvailableTags();
+  clearChanges(): void {
+    this.post.id ? this.form.patchValue(this.post) : this.form.reset();
+    this.setTags();
+    this.setToEditMode(!this.post.id);
   }
 
-  addTag(): void {
-    const value = this.addTagControl.value.trim();
-    if (value && !this.addTagControl.errors) {
-      this.updateTags(value);
-      this.addTagControl.reset();
-    }
+  updateTagsControl(tags: string[]): void {
+    this.form.get('tags')?.patchValue(tags);
+    this.setTags();
   }
 
-  private updateAvailableTags(changes?: SimpleChanges) {
-    if (changes) {
-      this.availableTags = changes['tags'].currentValue.filter(
-        (d: string) => !this.post.tags?.includes(d)
-      );
-    } else {
-      this.availableTags = this.tags.filter(
-        (d: string) => !this.form.get('tags')?.value?.includes(d)
-      );
-    }
-    this.addTagControl.setValidators(
-      uniqueValidator(this.form.get('tags')?.value)
-    );
+  private setTags(): void {
+    this.tags = [...this.form.get('tags')?.value || []];
   }
 }

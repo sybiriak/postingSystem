@@ -1,0 +1,34 @@
+<div class="tag-list">
+  <ng-container *ngFor="let tag of tags">
+    <span class="tag-item">
+      {{ tag }}
+      <button *ngIf="isEditMode" class="remove-button" (click)="removeTag(tag)">
+        x
+      </button>
+    </span>
+  </ng-container>
+  <ng-container *ngIf="isEditMode">
+    <button class="primary-button add-button" (click)="showAddTagField()">
+      {{ isAddTagFieldShowed ? "-" : "+" }}
+    </button>
+    <ng-container *ngIf="isAddTagFieldShowed">
+      <input
+        [formControl]="addTagControl"
+        [ngClass]="{ invalid: addTagControl.errors }"
+        type="text"
+        placeholder="add Tag"
+        list="tag-list"
+      />
+      <datalist id="tag-list">
+        <option *ngFor="let item of availableTags" [value]="item"></option>
+      </datalist>
+      <button
+        class="primary-button add-tag-button"
+        (click)="addTag()"
+        [disabled]="addTagControl.errors"
+      >
+        Add
+      </button>
+    </ng-container>
+  </ng-container>
+</div>

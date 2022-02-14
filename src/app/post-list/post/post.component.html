@@ -23,40 +23,11 @@
   </ng-container>
 
   <div class="actions-container">
-    <div class="tag-list">
-      <ng-container *ngFor="let tag of this.form.get('tags')?.value">
-        <app-tag
-          [tag]="tag"
-          [isEditMode]="isEditMode"
-          (tagRemoved)="updateTags($event)"
-        ></app-tag>
-      </ng-container>
-      <ng-container *ngIf="isEditMode">
-        <button class="primary-button add-button" (click)="showAddTagField()">
-          {{ isAddTagFieldShowed ? "-" : "+" }}
-        </button>
-        <ng-container *ngIf="isAddTagFieldShowed">
-          <input
-            [formControl]="addTagControl"
-            [ngClass]="{ invalid: addTagControl.errors }"
-            type="text"
-            placeholder="add Tag"
-            list="tag-list"
-          />
-          <datalist id="tag-list">
-            <option *ngFor="let item of availableTags" [value]="item"></option>
-          </datalist>
-          <button
-            class="primary-button add-tag-button"
-            (click)="addTag()"
-            [disabled]="addTagControl.errors"
-          >
-            Add
-          </button>
-        </ng-container>
-      </ng-container>
-    </div>
-
+    <app-tags
+      [tags]="tags"
+      [isEditMode]="isEditMode"
+      (tagsUpdated)="updateTagsControl($event)"
+    ></app-tags>
     <div class="actions" [ngSwitch]="isEditMode">
       <ng-container *ngSwitchCase="false">
         <button

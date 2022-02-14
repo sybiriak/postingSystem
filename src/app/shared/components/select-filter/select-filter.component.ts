@@ -1,4 +1,4 @@
-import { distinctUntilChanged, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import {
   Component,
   Input,
@@ -17,7 +17,7 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./select-filter.component.scss'],
 })
 export class SelectFilterComponent implements OnChanges, OnInit, OnDestroy {
-  @Input() options: string[] = [];
+  @Input() options: string[] | null = [];
 
   @Output() filtered = new EventEmitter<string>();
 
