@@ -1,12 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { delay, map, Observable, of, Subject, tap } from 'rxjs';
-import { PostListUpdates, PostRaw } from 'src/app/shared/interfaces/post';
+import { catchError, delay, map, Observable, of, Subject, tap } from 'rxjs';
+import { PostRaw } from 'src/app/shared/interfaces/post';
 import { Post } from 'src/app/shared/models/post';
 
 @Injectable()
 export class PostListService {
-  postListUpdated: Subject<PostListUpdates> = new Subject();
+  postListUpdated: Subject<Post[]> = new Subject();
 
   private postList: Post[] = [];
 
@@ -16,7 +16,8 @@ export class PostListService {
     this.http
       .get<PostRaw[]>('/assets/mocks/post-list.json')
       .pipe(
-        delay(1000),
+        delay(500), // Simulate server delay
+        catchError(() => (alert('Post list was not received. Request error.'), of([]))),
         map((response) => response.map((d) => new Post(d)))
       )
       .subscribe((postList) => {
@@ -38,19 +39,25 @@ export class PostListService {
   addPost(post: Post): Observable<boolean> {
     post.id = (Math.random() * Math.random() * Math.random()).toString(); // Server generate id simulation
     return of(true).pipe(
-      tap(() => {
-        this.postList.push(post);
-        this.triggerUpdate();
+      catchError(() => (alert('Post was not added. Request error.'), of(false))),
+      tap((isUpdated) => {
+        if (isUpdated) {
+          this.postList.push(post);
+          this.triggerUpdate();
+        }
       })
     );
   }
 
   deletePost(postId: string): Observable<boolean> {
     return of(true).pipe(
-      tap(() => {
-        const index = this.postList.findIndex(d => d.id === postId);
-        this.postList.splice(index, 1);
-        this.triggerUpdate();
+      catchError(() => (alert('Post was not deleted. Request error.'), of(false))),
+      tap((isUpdated) => {
+        if (isUpdated) {
+          const index = this.postList.findIndex(d => d.id === postId);
+          this.postList.splice(index, 1);
+          this.triggerUpdate();
+        }
       })
     );
   }
@@ -62,9 +69,6 @@ export class PostListService {
   }
 
   triggerUpdate(): void {
-    this.postListUpdated.next({
-      list: this.postList,
-      tags: this.getTagList()
-    });
+    this.postListUpdated.next(this.postList);
   }
 }

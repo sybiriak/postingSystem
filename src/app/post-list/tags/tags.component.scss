@@ -40,12 +40,6 @@ $tag-gap: calc(#{var(--base-gap)} / 2);
   }
 }
 
-.add-tag-button:disabled {
-  background-color: var(--color-grey);
-  pointer-events: none;
-  cursor: default;
-}
-
 .add-button {
   font-size: 23px;
   padding: 0 $tag-gap;

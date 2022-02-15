@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { PostRaw } from 'src/app/shared/interfaces/post';
 import { Post } from 'src/app/shared/models/post';
@@ -27,8 +27,8 @@ export class PostComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.form = new FormGroup({
-      title: new FormControl(this.post.title),
-      text: new FormControl(this.post.text),
+      title: new FormControl(this.post.title, Validators.required),
+      text: new FormControl(this.post.text || ''),
       tags: new FormControl(this.post.tags || []),
     });
 

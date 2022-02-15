@@ -1,12 +1,12 @@
 <div class="container">
-  <ng-container *ngIf="(postList$ | async) as post; else loader">
+  <ng-container *ngIf="(postList$ | async) as postList; else loader">
     <div class="post-list">
       <app-select-filter
-        [options]="post.tags"
+        [options]="tags"
         (filtered)="filterPostList($event)"
       ></app-select-filter>
   
-      <ng-container *ngFor="let item of post.list; trackBy: trackById">
+      <ng-container *ngFor="let item of postList; trackBy: trackById">
         <app-post
           [post]="item"
         ></app-post>

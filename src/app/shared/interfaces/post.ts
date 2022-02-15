@@ -6,8 +6,3 @@ export interface PostRaw {
   text: string;
   tags: string[];
 }
-
-export interface PostListUpdates {
-  list: Post[],
-  tags: string[]
-}

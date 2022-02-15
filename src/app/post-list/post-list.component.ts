@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { Post } from 'src/app/shared/models/post';
-import { PostListUpdates } from '../shared/interfaces/post';
 import { PostListService } from './post-list.service';
 
 @Component({
@@ -12,7 +11,9 @@ import { PostListService } from './post-list.service';
 })
 export class PostListComponent implements OnInit {
 
-  postList$: Observable<PostListUpdates>;
+  postList$: Observable<Post[]>;
+
+  tags: string[] = [];
 
   private searchValue: string = '';
 
@@ -22,10 +23,11 @@ export class PostListComponent implements OnInit {
     this.postList$ = this.postListService.postListUpdated.asObservable()
       .pipe(
         map(post => {
-          if (!post.tags?.includes(this.searchValue)) {
+          this.tags = this.postListService.getTagList();
+          if (!this.tags?.includes(this.searchValue)) {
             this.searchValue = '';
           }
-          post.list = this.searchValue ? post.list.filter(d => d.tags.includes(this.searchValue)) : post.list;
+          post = this.searchValue ? post.filter(d => d.tags.includes(this.searchValue)) : post;
           return post;
         })
       );

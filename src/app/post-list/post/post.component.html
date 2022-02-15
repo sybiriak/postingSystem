@@ -11,6 +11,7 @@
         name="title"
         formControlName="title"
         placeholder="Type Title"
+        required
       />
       <textarea
         class="text-input"
@@ -44,7 +45,7 @@
         <button class="secondary-button" (click)="clearChanges()">
           Cancel
         </button>
-        <button class="primary-button" (click)="savePost()">Save</button>
+        <button class="primary-button" [disabled]="form.invalid" (click)="savePost()">Save</button>
       </ng-container>
     </div>
   </div>
