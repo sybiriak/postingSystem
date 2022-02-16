@@ -2,7 +2,7 @@
   <ng-container [ngSwitch]="isEditMode">
     <ng-container *ngSwitchCase="false">
       <h3 class="title">{{ post.title }}</h3>
-      <p class="text" [innerHTML]="post.text | calculate | safeHTML"></p>
+      <p class="text" [innerHTML]="(post.text || '') | calculate | safeHTML"></p>
     </ng-container>
     <ng-container *ngSwitchCase="true" [formGroup]="form">
       <input

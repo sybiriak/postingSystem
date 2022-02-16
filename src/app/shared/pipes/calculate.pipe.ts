@@ -60,7 +60,12 @@ export class CalculatePipe implements PipeTransform {
       console.error('Operator parse error, CalculatePipe.calculate');
       return;
     }
+    const firstNumberNegative = value.startsWith('-') && operator[0] === Operation.minus;
     const items = value.split(operator[0]);
+    if (firstNumberNegative) {
+      items.shift();
+      items[0] = `-${items[0]}`;
+    }
     switch (operator[0]) {
       case Operation.minus:
         return +items[0] - +items[1];
