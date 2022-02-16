@@ -6,7 +6,7 @@ import { PostListModule } from './post-list/post-list.module';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,

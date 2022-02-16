@@ -8,9 +8,16 @@ import { PostComponent } from './post/post.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SafeHTMLPipe } from '../shared/pipes/safe-html.pipe';
 import { TagsComponent } from './tags/tags.component';
+import { CalculatePipe } from '../shared/pipes/calculate.pipe';
 
 @NgModule({
-  declarations: [PostListComponent, PostComponent, SafeHTMLPipe, TagsComponent],
+  declarations: [
+    PostListComponent,
+    PostComponent,
+    TagsComponent,
+    SafeHTMLPipe,
+    CalculatePipe,
+  ],
   imports: [
     CommonModule,
     SelectFilterModule,
