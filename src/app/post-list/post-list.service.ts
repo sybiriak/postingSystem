@@ -28,10 +28,12 @@ export class PostListService {
 
   updatePost(post: Post): Observable<boolean> {
     return of(true).pipe(
-      tap(() => {
-        const index = this.postList.findIndex(d => d.id === post.id);
-        this.postList[index] = post;
-        this.triggerUpdate();
+      tap((isUpdated) => {
+        if (isUpdated) {
+          const index = this.postList.findIndex(d => d.id === post.id);
+          this.postList[index] = post;
+          this.triggerUpdate();
+        }
       })
     );
   }

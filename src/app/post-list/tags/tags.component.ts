@@ -55,8 +55,8 @@ export class TagsComponent implements OnInit, OnDestroy {
     this.tagsUpdated.emit(this.tags);
   }
 
-  showAddTagField(show?: boolean): void {
-    this.isAddTagFieldShowed = show ?? !this.isAddTagFieldShowed;
+  showAddTagField(): void {
+    this.isAddTagFieldShowed = !this.isAddTagFieldShowed;
     if (!this.isAddTagFieldShowed) {
       this.addTagControl.reset();
     }

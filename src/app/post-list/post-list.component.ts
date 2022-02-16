@@ -22,14 +22,7 @@ export class PostListComponent implements OnInit {
   ) {
     this.postList$ = this.postListService.postListUpdated.asObservable()
       .pipe(
-        map(post => {
-          this.tags = this.postListService.getTagList();
-          if (!this.tags?.includes(this.searchValue)) {
-            this.searchValue = '';
-          }
-          post = this.searchValue ? post.filter(d => d.tags.includes(this.searchValue)) : post;
-          return post;
-        })
+        map(this.preparePostList.bind(this))
       );
   }
 
@@ -46,4 +39,12 @@ export class PostListComponent implements OnInit {
     this.postListService.triggerUpdate();
   }
 
+  private preparePostList(postList: Post[]): Post[] {
+    this.tags = this.postListService.getTagList();
+    if (!this.tags?.includes(this.searchValue)) {
+      this.searchValue = '';
+    }
+    postList = this.searchValue ? postList.filter(d => d.tags.includes(this.searchValue)) : postList;
+    return postList;
+  }
 }
